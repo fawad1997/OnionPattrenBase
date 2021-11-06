@@ -8,4 +8,9 @@
     <ProjectReference Include="..\RepositoryLayer\RepositoryLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Service\Implementation\" />
+    <Folder Include="Service\Contract\" />
+  </ItemGroup>
+
 </Project>

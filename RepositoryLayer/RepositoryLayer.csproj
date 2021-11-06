@@ -8,4 +8,8 @@
     <ProjectReference Include="..\DomainLayer\DomainLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DbContextLayer\" />
+  </ItemGroup>
+
 </Project>
