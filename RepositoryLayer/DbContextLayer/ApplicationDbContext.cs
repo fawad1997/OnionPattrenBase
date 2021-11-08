@@ -14,6 +14,7 @@ namespace RepositoryLayer.DbContextLayer
         {
 
         }
-        public DbSet<User> users { get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<Account> Accounts { get; set; }
     }
 }
