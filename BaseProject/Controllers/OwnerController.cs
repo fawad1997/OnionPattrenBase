@@ -76,7 +76,7 @@ namespace BaseProject.Controllers
         {
             var owner = _repositoryWrapper.Owner.FindByCondition(x => x.OwnerId == id).FirstOrDefault();
             if (owner == null)
-                return BadRequest();
+                return NotFound();
             _repositoryWrapper.Owner.Delete(owner);
             _repositoryWrapper.Save();
             return Ok();
