@@ -5,9 +5,10 @@ using SerivceLayer.Service.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Web.Http.Description;
 
 namespace BaseProject.Controllers
 {
@@ -24,50 +25,61 @@ namespace BaseProject.Controllers
             _logger = logger;
         }
 
-        // GET: api/<OwnerController>
+        //GET: api/<OwnerController>
         [HttpGet]
-        public IEnumerable<Owner> Get()
+        public IActionResult Get()
         {
-            return _repositoryWrapper.Owner.FindAll();
+            return Ok(_repositoryWrapper.Owner.FindAll());
         }
+
 
         // GET api/<OwnerController>/5
         [HttpGet("{id}")]
-        public Owner Get(int id)
+        public IActionResult Get(int id)
         {
-            return _repositoryWrapper.Owner.FindByCondition(x=>x.Name=="Fawad").FirstOrDefault();
+            var user = _repositoryWrapper.Owner.FindByCondition(x=>x.OwnerId==id).FirstOrDefault();
+            if (user == null)
+                return NotFound();
+            return Ok(user);
         }
 
         // POST api/<OwnerController>
         [HttpPost]
-        public void Post([FromBody] Owner owner)
+        public IActionResult Post([FromBody] Owner owner)
         {
             if (ModelState.IsValid)
             {
                 _repositoryWrapper.Owner.Create(owner);
                 _repositoryWrapper.Save();
+                return Created("~api/owner/", owner);
             }
+            return BadRequest();
         }
 
         // PUT api/<OwnerController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Owner owner)
+        public IActionResult Put(int id, [FromBody] Owner owner)
         {
             if (ModelState.IsValid)
             {
                 owner.OwnerId = id;
                 _repositoryWrapper.Owner.Update(owner);
                 _repositoryWrapper.Save();
+                return Ok();
             }
+            return BadRequest();
         }
 
         // DELETE api/<OwnerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             var owner = _repositoryWrapper.Owner.FindByCondition(x => x.OwnerId == id).FirstOrDefault();
+            if (owner == null)
+                return BadRequest();
             _repositoryWrapper.Owner.Delete(owner);
             _repositoryWrapper.Save();
+            return Ok();
         }
     }
 }
