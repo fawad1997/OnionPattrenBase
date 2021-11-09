@@ -11,7 +11,7 @@ namespace DomainLayer.Models
     public class Account
     {
         [Key]
-        public Guid AccountId { get; set; }
+        public int AccountId { get; set; }
 
         [Required(ErrorMessage = "Date created is required")]
         public DateTime DateCreated { get; set; }
@@ -20,7 +20,7 @@ namespace DomainLayer.Models
         public string AccountType { get; set; }
 
         [ForeignKey(nameof(Owner))]
-        public Guid OwnerId { get; set; }
+        public int OwnerId { get; set; }
         public Owner Owner { get; set; }
     }
 }

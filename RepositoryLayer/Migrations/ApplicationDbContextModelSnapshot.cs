@@ -21,9 +21,10 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.Account", b =>
                 {
-                    b.Property<Guid>("AccountId")
+                    b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccountType")
                         .IsRequired()
@@ -32,8 +33,8 @@ namespace RepositoryLayer.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
 
                     b.HasKey("AccountId");
 
@@ -44,9 +45,10 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.Owner", b =>
                 {
-                    b.Property<Guid>("OwnerId")
+                    b.Property<int>("OwnerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
                         .IsRequired()

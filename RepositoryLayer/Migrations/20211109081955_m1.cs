@@ -3,18 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RepositoryLayer.Migrations
 {
-    public partial class m2 : Migration
+    public partial class m1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "users");
-
             migrationBuilder.CreateTable(
                 name: "owner",
                 columns: table => new
                 {
-                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OwnerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
@@ -28,10 +26,11 @@ namespace RepositoryLayer.Migrations
                 name: "Accounts",
                 columns: table => new
                 {
-                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    OwnerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,24 +56,6 @@ namespace RepositoryLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "owner");
-
-            migrationBuilder.CreateTable(
-                name: "users",
-                columns: table => new
-                {
-                    userId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    userAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    userCreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    userEmailId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    userName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    userPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    userUpdationTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_users", x => x.userId);
-                });
         }
     }
 }
