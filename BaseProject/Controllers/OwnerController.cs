@@ -1,4 +1,6 @@
-﻿using DomainLayer.Models;
+﻿using AutoMapper;
+using DomainLayer.Models;
+using DomainLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SerivceLayer.Service.Contract;
@@ -18,18 +20,22 @@ namespace BaseProject.Controllers
     {
         private IRepositoryWrapper _repositoryWrapper;
         private readonly ILogger<OwnerController> _logger;
+        private readonly IMapper _mapper;
 
-        public OwnerController(IRepositoryWrapper repositoryWrapper, ILogger<OwnerController> logger)
+        public OwnerController(IRepositoryWrapper repositoryWrapper, ILogger<OwnerController> logger,IMapper mapper)
         {
             _repositoryWrapper = repositoryWrapper;
             _logger = logger;
+            _mapper = mapper;
         }
 
         //GET: api/<OwnerController>
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repositoryWrapper.Owner.FindAll());
+            var owners = _repositoryWrapper.Owner.FindAll();
+            var ownerVM = _mapper.Map<List<OwnerVM>>(owners);
+            return Ok(ownerVM);
         }
 
 
@@ -37,18 +43,20 @@ namespace BaseProject.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var user = _repositoryWrapper.Owner.FindByCondition(x=>x.OwnerId==id).FirstOrDefault();
-            if (user == null)
+            var owner = _repositoryWrapper.Owner.FindByCondition(x=>x.OwnerId==id).FirstOrDefault();
+            if (owner == null)
                 return NotFound();
-            return Ok(user);
+            var ownerVM = _mapper.Map<OwnerVM>(owner);
+            return Ok(ownerVM);
         }
 
         // POST api/<OwnerController>
         [HttpPost]
-        public IActionResult Post([FromBody] Owner owner)
+        public IActionResult Post([FromBody] OwnerVM ownerVM)
         {
             if (ModelState.IsValid)
             {
+                var owner = _mapper.Map<Owner>(ownerVM);
                 _repositoryWrapper.Owner.Create(owner);
                 _repositoryWrapper.Save();
                 return Created("~api/owner/", owner);
@@ -58,11 +66,15 @@ namespace BaseProject.Controllers
 
         // PUT api/<OwnerController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Owner owner)
+        public IActionResult Put(int id, [FromBody] OwnerVM ownerVM)
         {
             if (ModelState.IsValid)
             {
-                owner.OwnerId = id;
+                bool ownerExists =_repositoryWrapper.Owner.FindByCondition(x => x.OwnerId == id).Any();
+                if (!ownerExists)
+                    return NotFound();
+                ownerVM.OwnerId = id;
+                var owner = _mapper.Map<Owner>(ownerVM);
                 _repositoryWrapper.Owner.Update(owner);
                 _repositoryWrapper.Save();
                 return Ok();
