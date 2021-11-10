@@ -28,15 +28,25 @@ namespace BaseProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Db Connection
             services.AddDbContext<ApplicationDbContext>(con => con.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //Adding AutoMapper
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddControllers();  
+            services.AddControllers();
+            //Adding Swagger
+            services.AddSwaggerGen(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c=>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Basic Project V1");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
