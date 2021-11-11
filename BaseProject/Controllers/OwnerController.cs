@@ -34,7 +34,7 @@ namespace BaseProject.Controllers
         public IActionResult Get()
         {
             var owners = _repositoryWrapper.Owner.FindAll();
-            var ownerVM = _mapper.Map<List<OwnerVM>>(owners);
+            var ownerVM = _mapper.Map<List<OwnerDTO>>(owners);
             return Ok(ownerVM);
         }
 
@@ -46,13 +46,13 @@ namespace BaseProject.Controllers
             var owner = _repositoryWrapper.Owner.FindByCondition(x=>x.OwnerId==id).FirstOrDefault();
             if (owner == null)
                 return NotFound();
-            var ownerVM = _mapper.Map<OwnerVM>(owner);
+            var ownerVM = _mapper.Map<OwnerDTO>(owner);
             return Ok(ownerVM);
         }
 
         // POST api/<OwnerController>
         [HttpPost]
-        public IActionResult Post([FromBody] OwnerVM ownerVM)
+        public IActionResult Post([FromBody] OwnerDTO ownerVM)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace BaseProject.Controllers
 
         // PUT api/<OwnerController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] OwnerVM ownerVM)
+        public IActionResult Put(int id, [FromBody] OwnerDTO ownerVM)
         {
             if (ModelState.IsValid)
             {

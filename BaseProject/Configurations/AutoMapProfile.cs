@@ -12,7 +12,7 @@ namespace BaseProject.Configurations
     {
         public AutoMapProfile()
         {
-            CreateMap<Owner, OwnerVM>().ReverseMap();
+            CreateMap<Owner, OwnerDTO>().ReverseMap();
         }
     }
 }

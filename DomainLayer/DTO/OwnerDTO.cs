@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.ViewModels
 {
-    public class OwnerVM
+    public class OwnerDTO
     {
         public int OwnerId { get; set; }
 
